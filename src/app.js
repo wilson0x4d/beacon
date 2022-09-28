@@ -54,6 +54,21 @@ for (let i = 0; i < platforms.length; i++) {
         }
     }
 }
+
+console.info(`Generating Module Data..`);
+for (const generatorName in dataGenerators) {
+    if (Object.hasOwnProperty.call(dataGenerators, generatorName)) {
+        const generator = dataGenerators[generatorName];
+        console.info(`Executing Generator: ${generatorName}`);
+        const contentDescriptors = await generator(config, platforms, mediaWikiInteractors.contentReader);
+        if (contentDescriptors.length > 0) {
+            contentDescriptors.forEach(contentDescriptor => {
+                contentUpdates.push(contentDescriptor);
+            });
+        }
+    }
+}
+
 await performContentUpdates(config, contentUpdates);
 
 async function performContentUpdates(config, contentUpdates) {
