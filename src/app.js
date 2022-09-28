@@ -4,6 +4,7 @@ import { MWTokenProvider, MWContentReader, MWContentWriter, MWContentUpdater } f
 import { arkGenerators, patchGenerators, dataGenerators } from './wiki/generators/index.js';
 import ForumPatchNotesReader from './forum/interactors/patch-notes-reader.js';
 import MWContentDescriptor from './wiki/content-descriptor.js';
+
 printInfo();
 
 config.initialize();
@@ -38,6 +39,20 @@ const forumPatchNotesReader = new ForumPatchNotesReader(config);
 const platforms = await forumPatchNotesReader.read();
 for (let i = 0; i < platforms.length; i++) {
     const platform = platforms[i];
+    console.info(`Processing Platform: ${platform.name}`);
+    // create content update for platform-specific version template
+    for (const generatorName in patchGenerators) {
+        if (Object.hasOwnProperty.call(patchGenerators, generatorName)) {
+            const generator = patchGenerators[generatorName];
+            console.info(`Executing Generator: ${generatorName}`);
+            const contentDescriptors = await generator(config, platform, mediaWikiInteractors.contentReader);
+            if (contentDescriptors.length > 0) {
+                contentDescriptors.forEach(contentDescriptor => {
+                    contentUpdates.push(contentDescriptor);
+                });
+            }
+        }
+    }
 }
 await performContentUpdates(config, contentUpdates);
 
