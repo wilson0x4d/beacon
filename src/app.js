@@ -1,6 +1,7 @@
 import { config } from './config/config.js';
 import { printInfo } from './util/cli-help.js'
 import { MWTokenProvider, MWContentReader, MWContentWriter, MWContentUpdater } from './wiki/interactors/index.js';
+import { arkGenerators, patchGenerators, dataGenerators } from './wiki/generators/index.js';
 import MWContentDescriptor from './wiki/content-descriptor.js';
 printInfo();
 
@@ -15,6 +16,16 @@ for (const arkName in config.arks) {
     try {
         if (Object.hasOwnProperty.call(config.arks, arkName)) {
             config.arks[arkName] = prepareArkData(config.arks[arkName]);
+            for (const generatorName in arkGenerators) {
+                if (Object.hasOwnProperty.call(arkGenerators, generatorName)) {
+                    const generator = arkGenerators[generatorName];
+                    console.info(`Executing Generator: ${generatorName}`);
+                    const contentDescriptor = await generator(config, config.arks[arkName], mediaWikiInteractors.contentReader);
+                    if (contentDescriptor !== null) {
+                        contentUpdates.push(contentDescriptor);
+                    }
+                }
+            }
         }
     } catch (ex) {
         console.warn(['err', ex]);
