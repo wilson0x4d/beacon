@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "camelcase": "^7.0.0",
+    "date-and-time": "^2.4.1",
+    "formdata-node": "^5.0.0",
+    "got": "^12.5.0",
+    "jsdom": "^20.0.0"
+  },
+  "type": "module"
+}
