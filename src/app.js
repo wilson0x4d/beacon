@@ -10,6 +10,17 @@ const mediaWikiInteractors = await initializeMediaWikiInteractors(config);
 
 const contentUpdates = [];
 
+for (const arkName in config.arks) {
+    console.info(`Processing ARK: ${arkName}`);
+    try {
+        if (Object.hasOwnProperty.call(config.arks, arkName)) {
+            config.arks[arkName] = prepareArkData(config.arks[arkName]);
+        }
+    } catch (ex) {
+        console.warn(['err', ex]);
+        continue;
+    }
+}
 await performContentUpdates(config, contentUpdates);
 
 async function performContentUpdates(config, contentUpdates) {
@@ -37,6 +48,21 @@ async function performContentUpdates(config, contentUpdates) {
     }
     console.info(`[${totalUpdates}/${contentUpdates.length}] Done; errors=${totalErrors}, warnings=${totalWarnings}, success=${totalUpdates - (totalErrors + totalWarnings)}`);
 }
+
+function prepareArkData(ark) {
+    const worldSettingsPath = path.resolve(config.dataDir, ark.worldSettingsPath);
+    if (!fs.existsSync(worldSettingsPath)) {
+        throw new Error('ARK world settings missing or invalid: ' + (worldSettingsPath || '(null)'));
+    }
+    const worldSettingsJson = fs.readFileSync(worldSettingsPath, 'utf8');
+    const worldSettingsData = JSON.parse(worldSettingsJson);
+    return {
+        worldSettings: worldSettingsData.worldSettings,
+        playerSpawns: worldSettingsData.playerSpawns,
+        ...ark
+    };
+}
+
 async function initializeMediaWikiInteractors(config) {
     const tokenProvider = new MWTokenProvider(config);
     const contentReader = new MWContentReader(config, tokenProvider);
