@@ -2,6 +2,7 @@ import { config } from './config/config.js';
 import { printInfo } from './util/cli-help.js'
 import { MWTokenProvider, MWContentReader, MWContentWriter, MWContentUpdater } from './wiki/interactors/index.js';
 import { arkGenerators, patchGenerators, dataGenerators } from './wiki/generators/index.js';
+import ForumPatchNotesReader from './forum/interactors/patch-notes-reader.js';
 import MWContentDescriptor from './wiki/content-descriptor.js';
 printInfo();
 
@@ -31,6 +32,12 @@ for (const arkName in config.arks) {
         console.warn(['err', ex]);
         continue;
     }
+}
+
+const forumPatchNotesReader = new ForumPatchNotesReader(config);
+const platforms = await forumPatchNotesReader.read();
+for (let i = 0; i < platforms.length; i++) {
+    const platform = platforms[i];
 }
 await performContentUpdates(config, contentUpdates);
 
