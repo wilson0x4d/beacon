@@ -1,6 +1,6 @@
-node_modules/
-wiki/
-output/
+/node_modules/
+/wiki/
+/output/
 
 .DS_Store
 
