@@ -10,6 +10,7 @@ export default async function(config, ark, contentReader) {
     }
     
     const mapStyles = ark.zones
+        .filter((e) => e.id >= 0)
         .map((e) => 
             mapStyleFragment
                 .replace('___ZONE_COLOR_VAR___', 'color-' + toZoneVar(e.name))
@@ -17,6 +18,7 @@ export default async function(config, ark, contentReader) {
         .join('\n');
 
     const mapMarkers = ark.playerSpawns
+        .filter((e) => e.regionId >= 0)
         .map((e) =>
             mapMarkerFragment
                 .replace('___MARKER_LAT___', Math.round(e.lat * 10) / 10)
@@ -26,6 +28,7 @@ export default async function(config, ark, contentReader) {
         .join('\n');
 
     const mapLegend = ark.zones
+        .filter((e) => e.id >= 0)
         .map((e) =>
             mapLegendFragment
                 .replace('___ZONE_COLOR_VAR___', 'color-' + toZoneVar(e.name))
