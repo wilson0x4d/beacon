@@ -29,7 +29,8 @@
                 "BOTPASS",
                 "--forum",
                 "https://survivetheark.com",
-                "--whatif"
+                "--whatif",
+                "--skip-patchnotes"
             ]
         }
     ]

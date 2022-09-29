@@ -5,8 +5,10 @@ import GamePlatformDescriptor from '../../game/platform-descriptor.js';
 
 export default class ForumPatchNotesReader {
     #forumUri;
+    #skipPatchNotes;
     constructor(config) {
         this.#forumUri = config.forumUri;
+        this.#skipPatchNotes = config.skipPatchNotes;
     }
     async read() {
         const platforms = [];
@@ -25,6 +27,9 @@ export default class ForumPatchNotesReader {
             const platform = new GamePlatformDescriptor(element[2]);
             platforms.push(platform);
             platform.patchNotesLink = element[1];
+            if (this.#skipPatchNotes === true) {
+                continue;
+            }
             try {
                 const platformPatchNotes = (await got
                     .get(platform.patchNotesLink))
@@ -37,12 +42,12 @@ export default class ForumPatchNotesReader {
                     platform.currentServerVersion = clientServerDateMatches[2];
                     platform.lastUpdateDate = new Date(clientServerDateMatches[3]);
                 }
-                    // parse patch notes
-                    const dom = new JSDOM(platformPatchNotes);
-                    const noteElements = dom.window.document.querySelector('div.cPost_contentWrap div.ipsContained')?.children;
-                    if (noteElements === undefined) {
-                        console.warn('..could not parse patch note elements, skipping.');
-                    } else {
+                // parse patch notes
+                const dom = new JSDOM(platformPatchNotes);
+                const noteElements = dom.window.document.querySelector('div.cPost_contentWrap div.ipsContained')?.children;
+                if (noteElements === undefined) {
+                    console.warn('..could not parse patch note elements, skipping.');
+                } else {
                     const patchLimit = 1000; // TODO: lower this to a reasonable "daily" value, only doing this as an initial capture for missing patch notes
                     for (let i = 0; i < noteElements.length && i < patchLimit; i++) {
                         const ele = noteElements[i];

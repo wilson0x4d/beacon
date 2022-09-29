@@ -46,6 +46,9 @@ const blacklistVersions = [
  * @returns 
  */
 export default async function(config, platform, contentReader) {
+    if (config.skipPatchNotes === true) {
+        return [];
+    }
     const contentUpdates = [];
     for (let i = 0; i < platform.patchNotes.length; i++) {
         const patchNote = platform.patchNotes[i];

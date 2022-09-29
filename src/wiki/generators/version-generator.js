@@ -1,8 +1,9 @@
-import fs from 'fs';
-import path from 'path';
 import MWContentDescriptor from '../content-descriptor.js';
 
 export default async function(config, platform, contentReader) {
+    if (config.skipPatchNotes === true) {
+        return [];
+    }
     const contentUpdates = [];
     try {
         const versionTemplateTitle = 

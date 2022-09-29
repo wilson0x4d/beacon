@@ -8,6 +8,7 @@ import { printHelp } from '../util/cli-help.js';
 export class AppConfig {
     #isInitialized = false;
     whatif = false;
+    skipPatchNotes = false;
     dataDir = undefined;
     outputDir = './wiki';
     playNiceMilliseconds = 3333;
@@ -78,6 +79,11 @@ export class AppConfig {
                 case '--whatif':
                 case '--what-if':
                     this.#__config_whatif();
+                    break;
+
+                case '--skip-patch-notes':
+                case '--skip-patchnotes':
+                    this.skipPatchNotes = true;
                     break;
 
                 case '--help':
