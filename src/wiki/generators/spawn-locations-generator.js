@@ -17,14 +17,18 @@ export default async function(config, ark, contentReader) {
                 .replace('___ZONE_COLOR___', e.color))
         .join('\n');
 
+    const mapRegions = Object.fromEntries(ark
+        .zones
+        .map((e) => [ e.id, e ]));
+
     const mapMarkers = ark.playerSpawns
         .filter((e) => e.regionId >= 0)
         .map((e) =>
             mapMarkerFragment
                 .replace('___MARKER_LAT___', Math.round(e.lat * 10) / 10)
                 .replace('___MARKER_LON___', Math.round(e.long * 10) / 10)
-                .replace('___ZONE_COLOR_VAR___', 'color-' + toZoneVar(ark.zones[e.regionId].name))
-                .replace('___ZONE_NAME___', ark.zones[e.regionId].name))
+                .replace('___ZONE_COLOR_VAR___', 'color-' + toZoneVar(mapRegions[e.regionId].name))
+                .replace('___ZONE_NAME___', mapRegions[e.regionId].name))
         .join('\n');
 
     const mapLegend = ark.zones
