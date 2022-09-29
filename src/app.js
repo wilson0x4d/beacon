@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { config } from './config/config.js';
 import { printInfo } from './util/cli-help.js'
 import { MWTokenProvider, MWContentReader, MWContentWriter, MWContentUpdater } from './wiki/interactors/index.js';
