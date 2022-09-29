@@ -29,7 +29,8 @@ export default async function(config, ark, contentReader) {
         .map((e) =>
             mapLegendFragment
                 .replace('___ZONE_COLOR_VAR___', 'color-' + toZoneVar(e.name))
-                .replace('___ZONE_NAME___', e.name))
+                .replace('___ZONE_NAME___', e.name)
+                .replace('___ZONE_DIFFICULTY___', e.difficulty === undefined ? '' : ` (${e.difficulty})`))
         .join('\n');
 
     const templateResult = templateFragment
@@ -74,7 +75,7 @@ const mapMarkerFragment = '| ___MARKER_LAT___, ___MARKER_LON___, , {{#var:___ZON
 
 const mapLegendFragment = '|-\n\
 | <div style="{{#var:dotstyle}}; background-color:{{#var:___ZONE_COLOR_VAR___}};"></div>\n\
-| ___ZONE_NAME___';
+| ___ZONE_NAME______ZONE_DIFFICULTY___';
 
 const templateFragment = '\
 {{#vardefine:dotstyle|display:inline-block; padding:0; width:15px; height:15px; margin:-3px; border-radius:50%; border:1px solid black;}}\n\
