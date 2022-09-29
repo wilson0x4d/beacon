@@ -57,6 +57,8 @@ export default class ForumPatchNotesReader {
                             let patchNoteSummary = ele2.innerHTML
                                 // remove unwanted tags
                                 .replaceAll(/\<\/li\>|\<[\/]*span[^\>]*\>|\<[\/]*font[^\>]*\>/g, '')
+                                // fence code snippets
+                                .replaceAll(/\<[\/]*code[^\>]*\>/g, '`')
                                 // reduce whitespace
                                 .replaceAll(/\s+|\&nbsp\;|\&shy\;/g, ' ')
                                 // convert list items to bullets
