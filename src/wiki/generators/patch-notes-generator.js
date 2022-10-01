@@ -137,7 +137,7 @@ function createPatchNote(platform, patchNote) {
             `${getPlatformPrefix(platform)}${patchNote.version}`,
             'text/x-wiki',
             fragmentContent
-                .replaceAll('___PATCH_DATE___', date.format(patchNote.patchDate, 'MMMM D, YYYY'))
+                .replaceAll('___PATCH_DATE___', formatDateWithDaySuffix(patchNote.patchDate))
                 .replaceAll('___MAJOR_MINOR___', patchNote.isMajor ? 'Major' : 'Minor')
                 .replaceAll('___PATCH_TYPE___', patchNote.isMajor ? 'server' : patchNote.patchType)
                 .replaceAll('___SUMMARY___', patchNote.summary),
@@ -147,12 +147,17 @@ function createPatchNote(platform, patchNote) {
     ];
 };
 
-function createFragmentContent(patchNote) {
-    return fragmentContent
-        .replaceAll('___PATCH_DATE___', date.format(patchNote.patchDate, 'MMMM D, YYYY'))
-        .replaceAll('___MAJOR_MINOR___', patchNote.isMajor ? 'Major' : 'Minor')
-        .replaceAll('___PATCH_TYPE___', patchNote.isMajor ? 'server' : patchNote.patchType)
-        .replaceAll('___SUMMARY___', patchNote.summary);
+// TODO: relocate as util
+function formatDateWithDaySuffix(dt) {
+    const dayOfMonth = dt.getDate();
+    const suffix = (dayOfMonth % 10 == 1 && dayOfMonth != 11
+        ? 'st'
+        : (dayOfMonth % 10 == 2 && dayOfMonth != 12
+            ? 'nd'
+            : (dayOfMonth % 10 == 3 && dayOfMonth != 13
+                ? 'rd'
+                : 'th')));
+    return `${date.format(dt, 'MMMM')} ${dayOfMonth}${suffix}, ${dt.getFullYear()}`;
 }
 
 function updatePatchNote(platform, patchNote) {
@@ -170,6 +175,14 @@ function updatePatchNote(platform, patchNote) {
             defaultContent)
     ];
 };
+
+function createFragmentContent(patchNote) {
+    return fragmentContent
+        .replaceAll('___PATCH_DATE___', formatDateWithDaySuffix(patchNote.patchDate))
+        .replaceAll('___MAJOR_MINOR___', patchNote.isMajor ? 'Major' : 'Minor')
+        .replaceAll('___PATCH_TYPE___', patchNote.isMajor ? 'server' : patchNote.patchType)
+        .replaceAll('___SUMMARY___', patchNote.summary);
+}
 
 function disambiguateClientPatchNote(platform, serverPatchNote, existingClientContent) {
     const serverContentFragment = createFragmentContent(serverPatchNote);
