@@ -88,13 +88,13 @@ export default async function(config, platform, contentReader) {
                 });
         } else if (existingContent.match(/\{\{disambig\}\}/g) !== null) {
             // there is a disambiguation page, abort/skip.
-        } else if (existingContent.match(/version for client/g) !== null && patchNote.patchType === 'server') {
+        } else if (existingContent.match(/version for client/g) !== null && patchNote.patchType === 'server' && patchNote.isMajor !== true) {
             // there is a client page, and we have server patch notes with the same version, disambiguate.
             disambiguateClientPatchNote(platform, patchNote, existingContent)
                 .forEach(contentUpdate => {
                     contentUpdates.push(contentUpdate);
                 });
-        } else if (existingContent.match(/version for server/g) !== null && patchNote.patchType === 'client') {
+        } else if (existingContent.match(/version for server/g) !== null && patchNote.patchType === 'client' && patchNote.isMajor !== true) {
             // there is a server page, and we have client patch notes with the same version, disambiguate.
             disambiguateServerPatchNote(platform, patchNote, existingContent)
                 .forEach(contentUpdate => {
