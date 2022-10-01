@@ -26,12 +26,12 @@ export default class MWContentUpdater {
                 }
             }
             // locate matches
-            const matchFragements = rawContent.match(contentDescriptor.fenceRegex);
-            if (matchFragements.length > 0) {
+            const matchFragments = rawContent.match(contentDescriptor.fenceRegex);
+            if (matchFragments !== null && matchFragments.length > 0) {
                 let requiresUpdate = false;
                 // check content for changes, optionally apply if changed
-                for (let i = 0; i < matchFragements.length; i++) {
-                    const matchFragment = matchFragements[i];
+                for (let i = 0; i < matchFragments.length; i++) {
+                    const matchFragment = matchFragments[i];
                     const matchFragmentHash = this.#md5.hash(matchFragment);
                     rawContent = rawContent.replace(matchFragment, contentDescriptor.content);
                     requiresUpdate = requiresUpdate || (matchFragmentHash !== contentHash);

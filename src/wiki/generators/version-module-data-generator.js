@@ -28,8 +28,9 @@ export default async function(config, platforms, contentReader) {
     const versionsRegex = /[\s]*\{[\s]*"([\d\.]+)"[^"]+"([^-]+-[^-]+-[^"]+)"[\s\,]*(ClientOnly|ServerOnly)*.*$/gm;
     //
     const versionModuleDataTitle = `Module:Version/data`;
-    let versionModuleDataNeedsUpdate = false;
-    let versionModuleDataContent = await contentReader.read(versionModuleDataTitle);
+    const originalData = await contentReader.read(versionModuleDataTitle);;
+    let versionModuleDataContent = originalData;
+
     for (let i = 0; i < platforms.length; i++) {
         const platform = platforms[i];
         if (platform.patchNotes === undefined || platform.patchNotes.length === 0) {
@@ -64,7 +65,6 @@ export default async function(config, platforms, contentReader) {
             }
             
             if (platformNeedsUpdate) {
-                versionModuleDataNeedsUpdate = true;
                 // sort platformVersions, required by the module even though the module greedily produces an index it doesn't bother sorting
                 platformVersions.sort(platformVersionComparer);
                 // generate content fragment from `platformVersions` to replace existing `platformRegex`

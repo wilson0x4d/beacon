@@ -13,7 +13,7 @@ const defaultContent = `\
 
 const fragmentContent = `\
 <onlyinclude><includeonly>'''Released''' - ___PATCH_DATE___ -''___MAJOR_MINOR___ version for ___PATCH_TYPE___s''</includeonly>\
-___NOTE___\n\
+___SUMMARY___\n\
 </onlyinclude>`;
 
 const fragmentContentRegex = /\<onlyinclude\>[\s\S]*\<\/onlyinclude\>/g;
@@ -57,7 +57,7 @@ export default async function(config, platform, contentReader) {
             //       can't/shouldn't be managed by Beacon, so they are blacklisted.
             continue;
         }
-        const title = `${patchNote.version}`;
+        const title = `${getPlatformPrefix(platform)}${patchNote.version}`;
         // NOTE: we check for an existing page that is conflicting to the patch notes being processed,
         //       there are three outcomes for this check:
         //

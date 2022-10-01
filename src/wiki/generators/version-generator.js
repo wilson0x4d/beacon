@@ -16,11 +16,11 @@ export default async function(config, platform, contentReader) {
                         : null;
         if (versionTemplateTitle !== null) {
             // take 'highest' version for platform, which assumes it is also the 'latest'
-            const platformVersion = (platform.serverVersion !== undefined && platform.clientVersion !== undefined)
-                ? (Number(platform.serverVersion) > Number(platform.clientVersion))
-                    ? platform.serverVersion
-                    : platform.clientVersion
-                : platform.serverVersion || platform.clientVersion;
+            const platformVersion = (platform.currentServerVersion !== undefined && platform.currentClientVersion !== undefined)
+                ? (Number(platform.currentServerVersion) > Number(platform.currentClientVersion))
+                    ? platform.currentServerVersion
+                    : platform.currentClientVersion
+                : platform.currentServerVersion || platform.currentClientVersion;
             contentUpdates.push(new MWContentDescriptor(
                 versionTemplateTitle,
                 'text/x-wiki',

@@ -14,7 +14,7 @@ export default class ForumPatchNotesReader {
         const platforms = [];
 
         const platformLinkRegex = /a href="(.*)" class=".*" title="(.*) Patch Notes/gi;
-        const clientServerDateRegex = /Patch Notes: Client[\: ]*v([\d\.]+).+Server[\: ]*v([\d\.]+).+\(Updated: (.*)\)/i;
+        const clientServerDateRegex = /Patch Notes\: Client[\: ]*v([\d\.]+).+Server[\: ]*v([\d\.]+).+\(Updated: (.*)\)/i;
         const versionPatchNotesRegex = /v([\d\.]+)[^\d]*([\d]+[-\\\/][\d]+[-\\\/][\d]+).*(major|minor) version.*/i;
         const clientServerMinorVersion = /version [update\s]*for[\&nbsp\;\s]*(client|server)/mi;
 
