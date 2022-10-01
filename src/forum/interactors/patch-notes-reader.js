@@ -48,7 +48,7 @@ export default class ForumPatchNotesReader {
                 if (noteElements === undefined) {
                     console.warn('..could not parse patch note elements, skipping.');
                 } else {
-                    const patchLimit = 1000; // TODO: lower this to a reasonable "daily" value, only doing this as an initial capture for missing patch notes
+                    const patchLimit = 10;
                     for (let i = 0; i < noteElements.length && i < patchLimit; i++) {
                         const ele = noteElements[i];
                         const versionPatchNotesRegexMatches = ele.innerHTML.match(versionPatchNotesRegex);
