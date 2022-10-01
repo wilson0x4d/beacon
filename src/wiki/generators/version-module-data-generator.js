@@ -83,8 +83,16 @@ export default async function(config, platforms, contentReader) {
             console.error(`Version Module Data Generator Error: platform='${platform.name}', message='${ex.message}'`);
         }
     }
-    return (versionModuleDataNeedsUpdate)
-        ? [ new MWContentDescriptor(versionModuleDataTitle, versionModuleDataContent, /[\s\S]+/g, `add ${totalMissingVersions} missing versions`) ]
+
+    return (versionModuleDataContent !== originalData)
+        ? [ new MWContentDescriptor(
+            versionModuleDataTitle,
+            'text/plain',
+            versionModuleDataContent,
+            totalMissingVersions > 0
+                ? `add ${totalMissingVersions} missing versions`
+                : 'data corrections',
+            /[\s\S]+/g) ]
         : [];
 }
 

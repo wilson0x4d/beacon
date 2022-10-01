@@ -135,13 +135,14 @@ function createPatchNote(platform, patchNote) {
     return [
         new MWContentDescriptor(
             `${getPlatformPrefix(platform)}${patchNote.version}`,
+            'text/x-wiki',
             fragmentContent
                 .replaceAll('___PATCH_DATE___', date.format(patchNote.patchDate, 'MMMM D, YYYY'))
                 .replaceAll('___MAJOR_MINOR___', patchNote.isMajor ? 'Major' : 'Minor')
                 .replaceAll('___PATCH_TYPE___', patchNote.isMajor ? 'server' : patchNote.patchType)
                 .replaceAll('___SUMMARY___', patchNote.summary),
-            fragmentContentRegex,
             'create patch notes',
+            fragmentContentRegex,
             defaultContent)
     ];
 };
@@ -158,8 +159,15 @@ function updatePatchNote(platform, patchNote) {
     return [
         new MWContentDescriptor(
             `${getPlatformPrefix(platform)}${patchNote.version}`,
-            createFragmentContent(patchNote),
-            'update patch notes')
+            'text/x-wiki',
+            fragmentContent
+                .replaceAll('___PATCH_DATE___', formatDateWithDaySuffix(patchNote.patchDate))
+                .replaceAll('___MAJOR_MINOR___', patchNote.isMajor ? 'Major' : 'Minor')
+                .replaceAll('___PATCH_TYPE___', patchNote.isMajor ? 'server' : patchNote.patchType)
+                .replaceAll('___SUMMARY___', patchNote.summary),
+            'update patch notes',
+            fragmentContentRegex,
+            defaultContent)
     ];
 };
 
@@ -180,23 +188,26 @@ function disambiguate(platform, patchNote, clientContentFragment, serverContentF
     return [
         new MWContentDescriptor(
             `${getPlatformPrefix(platform)}${patchNote.version}_(Client)`,
+            'text/x-wiki',
             clientContentFragment,
-            fragmentContentRegex,
             'add client patch notes',
+            fragmentContentRegex,
             defaultContent.replaceAll('{{Infobox patch}}', '<!--{{Infobox patch}}-->')),
         new MWContentDescriptor(
             `${getPlatformPrefix(platform)}${patchNote.version}_(Server)`,
+            'text/x-wiki',
             serverContentFragment,
-            fragmentContentRegex,
             'add server patch notes',
+            fragmentContentRegex,
             defaultContent.replaceAll('{{Infobox patch}}', '<!--{{Infobox patch}}-->')),
         new MWContentDescriptor(
             `${getPlatformPrefix(platform)}${patchNote.version}`,
+            'text/x-wiki',
             defaultDisambiguationContent
                 .replaceAll('___PLATFORM_PREFIX___', getPlatformPrefix(platform))
                 .replaceAll('___PATCH_VERSION___', patchNote.version),
-            /[\s\S]+/g,
             'add client/server patch notes disambiguation page',
+            /[\s\S]+/g,
             'MISSING')
     ]
 }

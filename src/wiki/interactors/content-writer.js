@@ -13,7 +13,7 @@ export default class MWContentWriter {
         this.#tokenProvider = tokenProvider;
         this.#formBuilder = new JsonFormBuilder();
     }
-    async write(title, content, summary, isNewContent) {
+    async write(title, contentFormat, content, summary, isNewContent) {
         if (this.#whatif === true) {
             return 'Success';
         }
@@ -21,7 +21,7 @@ export default class MWContentWriter {
         const params = {
             bot: true,
             minor: true,
-            contentformat: 'text/x-wiki',
+            contentformat: contentFormat,
             //
             title: title,
             summary: summary,

@@ -23,9 +23,10 @@ export default async function(config, platform, contentReader) {
                 : platform.serverVersion || platform.clientVersion;
             contentUpdates.push(new MWContentDescriptor(
                 versionTemplateTitle,
+                'text/x-wiki',
                 `{{#vardefine:ver|${platformVersion}}}`,
-                /\{\{#vardefine\:ver\|[\d\.]+\}\}/g,
-                'version update'));
+                'version update',
+                /\{\{#vardefine\:ver\|[\d\.]+\}\}/g));
         }
     } catch (ex) {
         console.error(`Version Generator Failed: platform='${platform.name}', message='${ex.message}'`);

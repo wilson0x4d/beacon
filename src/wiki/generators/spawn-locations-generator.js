@@ -54,9 +54,10 @@ export default async function(config, ark, contentReader) {
     const title = ark.worldSettings.name.replaceAll(' ', '_') + '/Spawn_Locations';
     return new MWContentDescriptor(
         title,
+        'text/x-wiki',
         templateResult,
-        automationReplacementRegex,
-        `regenerated from game data`);
+        `regenerated from game data`,
+        automationReplacementRegex);
 }
 
 function toZoneVar(input) {

@@ -42,6 +42,7 @@ export default class MWContentUpdater {
                 if (requiresUpdate) {
                     return await this.#contentWriter.write(
                         contentDescriptor.title,
+                        contentDescriptor.contentType,
                         rawContent,
                         contentDescriptor.changeSummary,
                         isNewContent);
