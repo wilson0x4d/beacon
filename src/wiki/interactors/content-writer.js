@@ -15,7 +15,7 @@ export default class MWContentWriter {
     }
     async write(title, contentFormat, content, summary, isNewContent) {
         if (this.#whatif === true) {
-            return 'Success';
+            return 'Success (--whatif)';
         }
         const csrfToken = await this.#tokenProvider.getCsrfToken();
         const params = {

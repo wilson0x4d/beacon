@@ -50,7 +50,7 @@ export default class MWContentUpdater {
                     return 'NO CHANGE';
                 }
             } else {
-                return 'FENCING ERROR';
+                return `FENCING ERROR; ${rawContent}`;
             }
         } catch (ex) {
             return `ERROR; ${ex.message}`;
